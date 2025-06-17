@@ -1,0 +1,41 @@
+@echo off
+setlocal enabledelayedexpansion
+
+REM === JavaFX SDK Path ===
+set "JAVAFX=C:\Program Files\javafx-sdk-21.0.7\lib"
+
+REM === Reset CLASSPATH ===
+set CLASSPATH=.
+
+REM === MySQL Connector ===
+set "CLASSPATH=%CLASSPATH%;C:\Users\91891\Downloads\mysql-connector-j-9.3.0\mysql-connector-j-9.3.0\mysql-connector-j-9.3.0.jar"
+
+REM === Apache POI JARs ===
+set "CLASSPATH=%CLASSPATH%;C:\Users\91891\Downloads\poi-bin-5.2.3-20220909\poi-bin-5.2.3\poi-5.2.3.jar"
+set "CLASSPATH=%CLASSPATH%;C:\Users\91891\Downloads\poi-bin-5.2.3-20220909\poi-bin-5.2.3\poi-ooxml-5.2.3.jar"
+
+REM === Log4j required jars ===
+set "CLASSPATH=%CLASSPATH%;C:\Users\91891\Downloads\poi-bin-5.2.3-20220909\poi-bin-5.2.3\lib\log4j-api-2.18.0.jar"
+set "CLASSPATH=%CLASSPATH%;C:\Users\91891\Downloads\poi-bin-5.2.3-20220909\poi-bin-5.2.3\lib\log4j-core-2.18.0.jar"
+
+REM === JSON JAR for Gemini API ===
+set "CLASSPATH=%CLASSPATH%;C:\Users\91891\Downloads\poi-bin-5.2.3-20220909\poi-bin-5.2.3\lib\json-20240303.jar"
+
+REM === Apache POI Dependencies ===
+for %%f in ("C:\Users\91891\Downloads\poi-bin-5.2.3-20220909\poi-bin-5.2.3\lib\*.jar") do (
+    set "CLASSPATH=!CLASSPATH!;%%f"
+)
+
+echo  Compiling DatabaseJavaFX1Version33.java ...
+javac --module-path "%JAVAFX%" --add-modules javafx.controls,javafx.fxml -cp "%CLASSPATH%" -Xlint:unchecked DatabaseJavaFX1Version41.java
+
+if errorlevel 1 (
+    echo Compilation failed!
+    pause
+    exit /b
+)
+
+echo Running DatabaseJavaFX1Version41 ...
+java --enable-native-access=ALL-UNNAMED --module-path "%JAVAFX%" --add-modules javafx.controls -cp "%CLASSPATH%" DatabaseJavaFX1Version41
+
+pause
